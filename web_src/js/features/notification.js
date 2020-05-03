@@ -43,6 +43,7 @@ export async function initNotificationCount() {
     return;
   }
 
+  //NotificationSettings.EventSourceUpdateTime = 0; // hotfix for 60s /user/events, clear me when fixed
   if (NotificationSettings.EventSourceUpdateTime > 0 && !!window.EventSource && window.SharedWorker) {
     // Try to connect to the event source via the shared worker first
     const worker = new SharedWorker(`${__webpack_public_path__}js/eventsource.sharedworker.js`, 'notification-worker');

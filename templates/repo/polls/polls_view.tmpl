@@ -1,0 +1,62 @@
+{{ template "base/head" . }}
+
+{{/*
+
+Index of the candidates for this poll.
+The candidates are sorted by decreasing poll success.
+
+*/}}
+
+<div class="repository polls">
+	{{ template "repo/header" . }}
+	<div class="ui container">
+		<div class="navbar">
+			{{ if and (or .CanWriteIssues .CanWritePulls) (not .Repository.IsArchived) }}
+				<div class="ui right">
+					<a class="ui green button" href="{{ $.Link }}/edit">{{ .i18n.Tr "repo.polls.edit" }}</a>
+				</div>
+			{{ end }}
+		</div>
+		<div class="ui divider"></div>
+		{{ template "base/alert" . }}
+
+		<div>
+			<h2>{{ .Poll.Subject }}</h2>
+
+			{{ if .Poll.RenderedDescription }}
+			<div class="ui attached segment">
+				<div class="render-content markdown">
+						{{ .Poll.RenderedDescription|Str2html }}
+{{/*						<span class="no-content">{{ .i18n.Tr "repo.polls.no_description" }}</span>*/}}
+				</div>
+			</div>
+			{{ end }}
+		</div>
+
+		{{/* Move these away once they're stable */}}
+		<style>
+
+		</style>
+
+		{{ $pollResult := .Poll.GetResult }}
+
+		<ul class="candidates issue list">
+			{{ range $key, $candidate := $pollResult.Candidates }}
+			<li class="item">
+				{{ template "repo/polls/merit_radial" $candidate.MeritProfile }}
+				&nbsp;
+				N°{{ $candidate.Position }}
+				&mdash;
+				&nbsp;
+				<a href="{{ $.AppSubUrl }}/{{ $.RepoRelPath }}/issues/{{ $candidate.CandidateID }}">
+					{{ $candidate.GetCandidateName }}
+					(#{{ $candidate.CandidateID }})
+				</a>
+			</li>
+			{{ end }}
+		</ul>
+
+	</div>
+</div>
+
+{{ template "base/footer" . }}

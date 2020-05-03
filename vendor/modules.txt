@@ -80,7 +80,7 @@ github.com/alecthomas/chroma/lexers/x
 github.com/alecthomas/chroma/lexers/y
 github.com/alecthomas/chroma/lexers/z
 github.com/alecthomas/chroma/styles
-# github.com/andybalholm/brotli v1.0.1
+# github.com/andybalholm/brotli v1.0.3
 ## explicit
 github.com/andybalholm/brotli
 # github.com/andybalholm/cascadia v1.1.0

@@ -722,6 +722,10 @@ func RegisterRoutes(m *web.Route) {
 		m.Combo("/compare/*", repo.MustBeNotEmpty, reqRepoCodeReader, repo.SetEditorconfigIfExists).
 			Get(ignSignIn, repo.SetDiffViewStyle, repo.SetWhitespaceBehavior, repo.CompareDiff).
 			Post(reqSignIn, context.RepoMustNotBeArchived(), reqRepoPullsReader, repo.MustAllowPulls, bindIgnErr(auth.CreateIssueForm{}), repo.SetWhitespaceBehavior, repo.CompareAndPullRequestPost)
+		m.Group("/polls", func() {
+			m.Get("", repo.IndexPolls)
+			m.Get("/{id}", repo.ViewPoll)
+		}, context.RepoAssignment, context.RepoRef())
 	}, context.RepoAssignment, context.UnitTypes())
 
 	// Grouping for those endpoints that do require authentication
@@ -798,6 +802,17 @@ func RegisterRoutes(m *web.Route) {
 		}, context.RepoMustNotBeArchived(), reqRepoIssuesOrPullsWriter, context.RepoRef())
 		m.Group("/pull", func() {
 			m.Post("/{index}/target_branch", repo.UpdatePullRequestTarget)
+		}, context.RepoMustNotBeArchived())
+
+		m.Group("/polls", func() {
+			m.Combo("/new").
+				Get(repo.NewPoll).
+				Post(bindIgnErr(auth.CreatePollForm{}), repo.NewPollPost)
+			m.Get("/{id}/edit", repo.EditPoll)
+			m.Post("/{id}/edit", bindIgnErr(auth.CreatePollForm{}), repo.EditPollPost)
+			m.Post("/{id}/delete", repo.DeletePoll)
+			m.Post("/{id}/judgments", repo.EmitJudgment)
+			//m.Delete("/{id}/judgments", repo.DeleteJudgment)
 		}, context.RepoMustNotBeArchived())
 
 		m.Group("", func() {

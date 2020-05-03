@@ -1562,6 +1562,13 @@ func ViewIssue(ctx *context.Context) {
 		return
 	}
 
+	// Get Polls
+	ctx.Data["Polls"], err = ctx.Repo.Repository.GetPolls()
+	if err != nil {
+		ctx.ServerError("IssueView.GetPolls", err)
+		return
+	}
+
 	ctx.Data["Participants"] = participants
 	ctx.Data["NumParticipants"] = len(participants)
 	ctx.Data["Issue"] = issue

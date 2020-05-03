@@ -1,0 +1,78 @@
+{{template "base/head" .}}
+<div class="repository new poll">
+	{{template "repo/header" .}}
+	<div class="ui container">
+		<h2 class="ui dividing header">
+			{{if .PageIsEditPoll}}
+				{{.i18n.Tr "repo.polls.edit"}}
+				<div class="sub header">{{.i18n.Tr "repo.polls.edit.subheader"}}</div>
+			{{else}}
+				{{.i18n.Tr "repo.polls.new"}}
+				<div class="sub header">{{.i18n.Tr "repo.polls.new.subheader"}}</div>
+			{{end}}
+		</h2>
+		{{template "base/alert" .}}
+		<form class="ui form grid" action="{{.Link}}" method="post">
+			{{.CsrfTokenHtml}}
+			<div class="twelve wide column">
+				<div class="field {{if .Err_Title}}error{{end}}">
+					{{/* form_poll_subject or form-poll-subject ? */}}
+					<label for="form_poll_subject">{{.i18n.Tr "repo.polls.subject.label"}}</label>
+					<input id="form_poll_subject" name="subject"
+						   placeholder="{{.i18n.Tr "repo.polls.subject.placeholder"}}"
+						   value="{{.subject}}" autofocus required maxlength="128">
+				</div>
+				<div class="field">
+					<label for="form_poll_description">{{.i18n.Tr "repo.polls.description.label"}}</label>
+					<textarea id="form_poll_description" name="description">{{.description}}</textarea>
+				</div>
+				<div class="field disabled">
+					<label for="form_poll_gradation">{{.i18n.Tr "repo.polls.gradation.label"}}</label>
+					<select id="form_poll_gradation" name="gradation" class="emote">
+						<option value="emote6-0" selected>😫 😒 😐 😌 😀 😍</option>
+						<option value="emote6-1">🤮 😒 😐 🙂 😀 🤩</option>
+					</select>
+				</div>
+				<div class="field disabled">
+					<label>{{ .i18n.Tr "repo.polls.candidates.label" }}</label>
+					<label>
+						<input type="radio" name="candidates_pool" value="issues_merges" checked>
+						{{ .i18n.Tr "repo.polls.candidates.pool.issues_merges" }}
+					</label>
+					<label>
+						<input type="radio" name="candidates_pool" value="issues">
+						{{ .i18n.Tr "repo.polls.candidates.pool.issues" }}
+					</label>
+					<label>
+						<input type="radio" name="candidates_pool" value="merges">
+						{{ .i18n.Tr "repo.polls.candidates.pool.merges" }}
+					</label>
+					<label>
+						<input type="radio" name="candidates_pool" value="indices">
+						{{ .i18n.Tr "repo.polls.candidates.pool.indices" }}
+						<input class="inline-input" type="text" name="candidates_pool_indices" title="{{ .i18n.Tr "repo.polls.candidates.pool.indices.help" }}" placeholder="1, 9, 12">
+					</label>
+				</div>
+			</div>
+
+			<div class="ui container">
+				<div class="ui divider"></div>
+				<div class="ui right">
+					{{if .PageIsEditPoll}}
+						<a class="ui blue basic button" href="{{.RepoLink}}/polls">
+							{{.i18n.Tr "repo.polls.cancel"}}
+						</a>
+						<button class="ui green button">
+							{{.i18n.Tr "repo.polls.modify"}}
+						</button>
+					{{else}}
+						<button class="ui green button">
+							{{.i18n.Tr "repo.polls.create"}}
+						</button>
+					{{end}}
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{{template "base/footer" .}}

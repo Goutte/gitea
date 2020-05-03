@@ -2136,3 +2136,43 @@ func IsErrOAuthApplicationNotFound(err error) bool {
 func (err ErrOAuthApplicationNotFound) Error() string {
 	return fmt.Sprintf("OAuth application not found [ID: %d]", err.ID)
 }
+
+//  ___     _ _   __          _         _                    _
+// | _ \___| | | / _|___   _ | |_  _ __| |__ _ _ __  ___ _ _| |_
+// |  _/ _ \ | | > _|_ _| | || | || / _` / _` | '  \/ -_) ' \  _|
+// |_| \___/_|_| \_____|   \__/ \_,_\__,_\__, |_|_|_\___|_||_\__|
+//                                       |___/
+
+// ErrPollNotFound represents a "PollNotFound" kind of error.
+type ErrPollNotFound struct {
+	ID     int64
+	RepoID int64
+}
+
+// IsErrPollNotFound checks if an error is a ErrPollNotFound.
+func IsErrPollNotFound(err error) bool {
+	_, ok := err.(ErrPollNotFound)
+	return ok
+}
+
+func (err ErrPollNotFound) Error() string {
+	return fmt.Sprintf("poll not found [id: %d, repo_id: %d]", err.ID, err.RepoID)
+}
+
+type ErrJudgmentNotFound struct {
+	Judge       *User
+	Poll        *Poll
+	CandidateID int64
+}
+
+func IsErrJudgmentNotFound(err error) bool {
+	_, ok := err.(ErrJudgmentNotFound)
+	return ok
+}
+
+func (err ErrJudgmentNotFound) Error() string {
+	return fmt.Sprintf("Judgment not found.")
+	//return fmt.Sprintf("Judgment not found" +
+	//	" for judge %d, poll %d and candidate %d.",
+	//	err.Judge.ID,  err.Poll.ID,  err.CandidateID)
+}
