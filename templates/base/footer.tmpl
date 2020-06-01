@@ -40,6 +40,9 @@
 
 	<script src="{{StaticUrlPrefix}}/fomantic/semantic.min.js?v={{MD5 AppVer}}"></script>
 	<script src="{{StaticUrlPrefix}}/js/index.js?v={{MD5 AppVer}}"></script>
+{{/* FIXME: move 8.5 to static */}}
+	<script src="https://unpkg.com/mermaid@8.4.5/dist/mermaid.min.js"></script>
+	<script>mermaid.init(".language-mermaid")</script>
 {{template "custom/footer" .}}
 </body>
 </html>
